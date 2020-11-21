@@ -50,8 +50,8 @@ val_loader = torch.utils.data.DataLoader(
 from model import Net
 # model = Net()
 model = torch.hub.load('pytorch/vision:v0.6.0', 'alexnet', pretrained=False)
-AlexNet_model.classifier[4] = nn.Linear(4096,1024)
-AlexNet_model.classifier[6] = nn.Linear(1024,20)
+model.classifier[4] = nn.Linear(4096,1024)
+model.classifier[6] = nn.Linear(1024,20)
 
 if use_cuda:
     print('Using GPU')
