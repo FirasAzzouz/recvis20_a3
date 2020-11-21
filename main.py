@@ -25,6 +25,9 @@ parser.add_argument('--log-interval', type=int, default=10, metavar='N',
                     help='how many batches to wait before logging training status')
 parser.add_argument('--experiment', type=str, default='experiment', metavar='E',
                     help='folder where experiment outputs are located.')
+parser.add_argument('--save_every', type=str, default=1, metavar='E',
+                    help='intervals between model save.')
+                    
 args = parser.parse_args()
 use_cuda = torch.cuda.is_available()
 torch.manual_seed(args.seed)
@@ -101,6 +104,7 @@ def validation():
 for epoch in range(1, args.epochs + 1):
     train(epoch)
     validation()
-    model_file = args.experiment + '/model_' + str(epoch) + '.pth'
-    torch.save(model.state_dict(), model_file)
-    print('Saved model to ' + model_file + '. You can run `python evaluate.py --model ' + model_file + '` to generate the Kaggle formatted csv file\n')
+    if epoch % save_every==0:
+        model_file = args.experiment + '/model_' + str(epoch) + '.pth'
+        torch.save(model.state_dict(), model_file)
+        print('Saved model to ' + model_file + '. You can run `python evaluate.py --model ' + model_file + '` to generate the Kaggle formatted csv file\n')
